@@ -1,0 +1,33 @@
+name: Ejecutar Playwright Script
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clonar el repositorio
+      uses: actions/checkout@v3
+
+    - name: Instalar Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Instalar dependencias
+      run: npm install
+
+    - name: Ejecutar script de Playwright
+      run: node index.js
+
+    - name: Subir reporte como artefacto
+      uses: actions/upload-artifact@v3
+      with:
+        name: reporte-mercado-libre
+        path: |
+          reporte.html
+          screenshots/
