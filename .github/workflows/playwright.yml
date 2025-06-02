@@ -10,16 +10,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clonar el repositorio
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Instalar Node.js
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '22.14.0'
 
-      - name: Instalar dependencias
-        run: npm install
+      - name: Install dependencies
+        run: |
+             npm ci
 
       - name: Ejecutar script de Playwright
         run: node index.js
