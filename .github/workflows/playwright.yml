@@ -2,7 +2,7 @@ name: Ejecutar Playwright Script
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -11,24 +11,30 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '22.14.0'
+          cache: 'npm'
 
       - name: Install dependencies
         run: |
-             npm ci
+          npm ci
+          npx playwright install --with-deps
 
       - name: Ejecutar script de Playwright
-        run: node index.js
+        run: |
+          xvfb-run --auto-servernum node index.js
+        env:
+          DISPLAY: ':99'
 
       - name: Subir reporte como artefacto
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: reporte-mercado-libre
           path: |
             reporte.html
             screenshots/
+          retention-days: 5
